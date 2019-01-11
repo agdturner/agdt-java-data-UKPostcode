@@ -56,10 +56,10 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 
     public transient static final String EOL = System.getProperty("line.separator");
 
-    public ONSPD_Environment() {
+    public ONSPD_Environment(File dataDir) {
         //Memory_Threshold = 3000000000L;
         Strings = new ONSPD_Strings();
-        Files = new ONSPD_Files(Strings, Strings.s_data);
+        Files = new ONSPD_Files(Strings, dataDir);
         ge = new Generic_Environment(Files, Strings);
 //        File f;
 //        f = Files.getEnvDataFile();
