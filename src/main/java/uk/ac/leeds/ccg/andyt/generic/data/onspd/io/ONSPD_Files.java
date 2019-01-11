@@ -31,9 +31,11 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
     /**
      *
      * @param s
+     * @param dataDir
      */
-    public ONSPD_Files(ONSPD_Strings s) {
+    public ONSPD_Files(ONSPD_Strings s, File dataDir) {
         super(s);
+        setDataDirectory(dataDir);
     }
 
     /**
