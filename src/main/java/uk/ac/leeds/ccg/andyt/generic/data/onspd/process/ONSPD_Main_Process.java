@@ -62,7 +62,7 @@ public class ONSPD_Main_Process extends ONSPD_Object {
     }
 
     public void run() {
-        logF0 = new File(Files.getOutputDataDir(Strings), "log0.txt");
+        logF0 = new File(Files.getOutputDataDir(), "log0.txt");
         logPW0 = Generic_IO.getPrintWriter(logF0, false); // Overwrite log file.
 
         File indir;

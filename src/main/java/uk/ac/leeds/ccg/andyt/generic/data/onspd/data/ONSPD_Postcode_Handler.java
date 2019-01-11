@@ -15,19 +15,6 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.data;
 
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2008_02Feb;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2013_08Aug;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2011_05May;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2015_08Aug;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2013_02Feb;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2014_11Nov;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2015_05May;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_AbstractRecord;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2012_11Nov;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_EastingNorthing;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_AbstractRecord1;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2016_02Feb;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Record_2013_05May;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +26,6 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
-import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
@@ -120,20 +106,14 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
             System.out.println("<Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + "/>");
             if (aPoint == null) {
                 System.out.println("No point look up for " + postcode0 + " in " + yM30v);
-                aPoint = getPointFromPostcode(
-                        yM31v,
-                        TYPE_UNIT,
-                        postcode0);
+                aPoint = getPointFromPostcode(                        yM31v,                        TYPE_UNIT,                        postcode0);
                 if (aPoint != null) {
                     System.out.println("However there is a look up for " + postcode0 + " in " + yM31v + "! Maybe use this instead?");
                 }
             }
             if (bPoint == null) {
                 System.out.println("No point look up for " + postcode1 + " in " + yM31v);
-                bPoint = getPointFromPostcode(
-                        yM30v,
-                        TYPE_UNIT,
-                        postcode1);
+                bPoint = getPointFromPostcode(                        yM30v,                        TYPE_UNIT,                        postcode1);
                 if (bPoint != null) {
                     System.out.println("However there is a look up for " + postcode1 + " in " + yM30v + "! Maybe use this instead?");
                 }
@@ -151,10 +131,8 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
      * @param postcode
      * @return
      */
-    public ONSPD_Point getPointFromPostcode(
-            ONSPD_YM3 nearestYM3ForONSPDLookup,
-            String level,
-            String postcode) {
+    public ONSPD_Point getPointFromPostcode(            ONSPD_YM3 nearestYM3ForONSPDLookup,
+            String level,            String postcode) {
         ONSPD_Point r;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
@@ -170,9 +148,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
      * @return
      */
     public ONSPD_Point getPointFromPostcodeNew(
-            ONSPD_YM3 NearestYM3ForONSPDLookup,
-            String level,
-            String PostcodeF) {
+            ONSPD_YM3 NearestYM3ForONSPDLookup,            String level,            String PostcodeF) {
         ONSPD_Point r;
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookupsLevel;
         ONSPDlookupsLevel = ONSPDLookups.get(level);
@@ -329,10 +305,9 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
      * a postcode its key does not get put into the result.
      */
     public TreeMap<String, ONSPD_Point> postcodeToPoints(
-            TreeMap<String, String> input,
-            ONSPD_YM3 yM3v) {
+            TreeMap<String, String> input,            ONSPD_YM3 yM3v) {
         TreeMap<String, ONSPD_Point> r;
-        r = new TreeMap<String, ONSPD_Point>();
+        r = new TreeMap<>();
         Iterator<String> ite_String = input.keySet().iterator();
         while (ite_String.hasNext()) {
             String key = ite_String.next();
@@ -394,7 +369,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         this.Env = env;
         this.Strings = env.Strings;
         this.Files = env.Files;
-       // this.ONSPDLookups = env.getONSPDLookups();
+        // this.ONSPDLookups = env.getONSPDLookups();
     }
 
     public String getDefaultLookupFilename() {
@@ -431,8 +406,8 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         while (ite.hasNext()) {
             ONSPD_YM3 YM3;
             YM3 = ite.next();
-            File outDir = new File(                    Env.Files.getGeneratedDataDir(Strings),                    YM3.toString());
-            File outFile = new File(                    outDir,                    processedFilename);
+            File outDir = new File(Env.Files.getGeneratedDataDir(), YM3.toString());
+            File outFile = new File(outDir, processedFilename);
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
                 Env.logO("Load " + outFile, true);
@@ -442,7 +417,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
                 f = ONSPDFiles.get(YM3);
                 Env.logO("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
-                        f,                        ignorePointsAtOrigin);
+                        f, ignorePointsAtOrigin);
                 outDir.mkdirs();
                 Generic_IO.writeObject(postcodeUnitPointLookup, outFile);
             }
@@ -459,10 +434,6 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
 //                inputFile);
 //        // Test some postcodes
 //        String postcode;
-//        postcode = "LS7 2EU";
-//        printTest2(
-//                lookup,
-//                postcode);
 //        postcode = "LS2 9JT";
 //        printTest2(
 //                lookup,
@@ -605,7 +576,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
 //        return lookup;
 //    }
     public HashSet<String> getNumeralsHashSet() {
-        HashSet<String> numerals_HashSet = new HashSet<String>();
+        HashSet<String> numerals_HashSet = new HashSet<>();
         numerals_HashSet.add("0");
         numerals_HashSet.add("1");
         numerals_HashSet.add("2");
@@ -622,7 +593,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
     public HashMap<String, String> readONSPD_OACodeLookup(
             File file,
             HashSet<String> numerals_HashSet) {
-        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, String> result = new HashMap<>();
         try {
             int lineCounter = 0;
             //int recordCounter = 0;
@@ -714,11 +685,11 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup,
             boolean ignorePointsAtOrigin) {
         TreeMap<String, ONSPD_Point> result;
-        result = new TreeMap<String, ONSPD_Point>();
+        result = new TreeMap<>();
         // Aggregate by postcode
         // Create postcodeSector to unitPostcodes look up
         TreeMap<String, HashSet<String>> postcodeSectorsAndUnitPostcodes;
-        postcodeSectorsAndUnitPostcodes = new TreeMap<String, HashSet<String>>();
+        postcodeSectorsAndUnitPostcodes = new TreeMap<>();
         Iterator<String> ite;
         ite = postcodeUnitPointLookup.keySet().iterator();
         while (ite.hasNext()) {
@@ -729,7 +700,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
                         unitPostcode);
             } else {
                 postcodeSectorsAndUnitPostcodes.put(
-                        postcodeSector, new HashSet<String>());
+                        postcodeSector, new HashSet<>());
             }
         }
         // Average points to get postcode sector centroids
@@ -802,11 +773,11 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup,
             boolean ignorePointsAtOrigin) {
         TreeMap<String, ONSPD_Point> result;
-        result = new TreeMap<String, ONSPD_Point>();
+        result = new TreeMap<>();
         // Aggregate by postcode
         // Create postcodeSector to unitPostcodes look up
         TreeMap<String, HashSet<String>> postcodeAreasAndUnitPostcodes;
-        postcodeAreasAndUnitPostcodes = new TreeMap<String, HashSet<String>>();
+        postcodeAreasAndUnitPostcodes = new TreeMap<>();
         Iterator<String> ite;
         ite = postcodeUnitPointLookup.keySet().iterator();
         while (ite.hasNext()) {
@@ -817,7 +788,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
                         unitPostcode);
             } else {
                 postcodeAreasAndUnitPostcodes.put(
-                        postcodeArea, new HashSet<String>());
+                        postcodeArea, new HashSet<>());
             }
         }
         // Average points to get postcode sector centroids
@@ -966,7 +937,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
     public TreeMap<String, ONSPD_Point> initPostcodeUnitPointLookup(
             File file,
             boolean ignorePointsAtOrigin) {
-        TreeMap<String, ONSPD_Point> result = new TreeMap<String, ONSPD_Point>();
+        TreeMap<String, ONSPD_Point> result = new TreeMap<>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;
@@ -1147,7 +1118,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
         Env.log("year " + year + " month " + month);
-        TreeMap<String, String> result = new TreeMap<String, String>();
+        TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;
@@ -1163,7 +1134,6 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
                         ONSPD_AbstractRecord rec;
-                        rec = null;
                         if (year < 2011 || (year == 2011 && month < 4)) {
                             rec = new ONSPD_Record_2008_02Feb(Env, line);
                         } else if (year < 2012 || (year == 2012 && month < 8)) {
@@ -1297,7 +1267,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
      */
     public TreeMap<String, String[]> readONSPDIntoTreeMapPostcodeStrings2(
             File file) {
-        TreeMap<String, String[]> result = new TreeMap<String, String[]>();
+        TreeMap<String, String[]> result = new TreeMap<>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;

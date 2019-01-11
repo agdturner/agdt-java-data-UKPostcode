@@ -28,15 +28,12 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
  */
 public class ONSPD_Files extends Generic_Files implements Serializable {
 
-    public transient ONSPD_Strings Strings;
-
     /**
      *
      * @param s
      */
     public ONSPD_Files(ONSPD_Strings s) {
-        super(s.s_data);
-        this.Strings = s;
+        super(s);
     }
 
     /**
@@ -45,27 +42,26 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
      * @param dataDirName
      */
     public ONSPD_Files(ONSPD_Strings s, String dataDirName) {
-        super(dataDirName);
-        this.Strings = s;
+        super(s);
     }
 
-    private File inputONSPDDir;
+    private File InputONSPDDir;
 
     public File getInputONSPDDir() {
-        if (inputONSPDDir == null) {
-            inputONSPDDir = new File(
+        if (InputONSPDDir == null) {
+            InputONSPDDir = new File(
                     getInputPostcodeDir(),
-                    Strings.S_ONSPD);
+                    getStrings().S_ONSPD);
         }
-        return inputONSPDDir;
+        return InputONSPDDir;
     }
 
     private File inputPostcodeDir;
 
     public File getInputPostcodeDir() {
         if (inputPostcodeDir == null) {
-            inputPostcodeDir = new File(getInputDataDir(Strings),
-                    Strings.S_Postcode);
+            inputPostcodeDir = new File(getInputDataDir(),
+                    getStrings().S_Postcode);
         }
         return inputPostcodeDir;
     }
@@ -164,5 +160,13 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
             }
         }
         return InputONSPDFiles;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public ONSPD_Strings getStrings() {
+        return (ONSPD_Strings) Strings;
     }
 }
