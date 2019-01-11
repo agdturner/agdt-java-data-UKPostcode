@@ -53,9 +53,9 @@ public class ONSPD_Main_Process extends ONSPD_Object {
     public static void main(String[] args) {
         ONSPD_Main_Process p;
         ONSPD_Environment env;
-        env = new ONSPD_Environment();
+        File dataDir = new File(System.getProperty("user.dir"), "data");
+        env = new ONSPD_Environment(dataDir);
         p = new ONSPD_Main_Process(env);
-        p.Files.setDataDirectory(new File(System.getProperty("user.dir"), "data"));
         // Main switches
         p.doLoadDataIntoCaches = true; // rename/reuse just left here for convenience...
         p.run();
