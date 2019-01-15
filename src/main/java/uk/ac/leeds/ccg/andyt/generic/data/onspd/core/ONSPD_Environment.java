@@ -18,12 +18,17 @@ package uk.ac.leeds.ccg.andyt.generic.data.onspd.core;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Postcode_Handler;
 //import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Data;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 
 /**
  *
@@ -283,5 +288,52 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
         for (StackTraceElement st1 : st) {
             logE(st1.toString());
         }
+    }
+    
+    /**
+     * For storing level(s) (OA, LSOA, MSOA, PostcodeSector, PostcodeUnit, ...)
+     */
+    protected String level;
+    protected ArrayList<String> levels;
+    private TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups;
+    
+    public TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> getONSPDlookups() {
+        if (ONSPDlookups == null) {
+            initONSPDLookups();
+        }
+        return ONSPDlookups;
+    }
+
+    protected void initPostcode_Handler() {
+        if (Postcode_Handler == null) {
+//            Postcode_Handler = new ONSPD_Postcode_Handler(Env.ONSPD_Environment);
+            Postcode_Handler = new ONSPD_Postcode_Handler(new ONSPD_Environment(Files.getDataDir()));
+        }
+    }
+
+    public void initONSPDLookups() {
+        initPostcode_Handler();
+        ONSPDlookups = new TreeMap<>();
+        levels = new ArrayList<>();
+        levels.add("Unit");
+        //levels.add("Sector");
+        //levels.add("Area");
+        TreeMap<ONSPD_YM3, File> ONSPDFiles;
+        ONSPDFiles = Files.getInputONSPDFiles();
+        Iterator<String> ite2;
+        ite2 = levels.iterator();
+        while (ite2.hasNext()) {
+            level = ite2.next();
+            TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookup;
+            ONSPDlookup = Postcode_Handler.getPostcodeUnitPointLookups(true,
+                    ONSPDFiles,
+                    Postcode_Handler.getDefaultLookupFilename());
+            ONSPDlookups.put(level, ONSPDlookup);
+        }
+    }
+    
+    public void setONSPDlookups(TreeMap<String, 
+            TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDlookups) {
+        this.ONSPDlookups = ONSPDlookups;
     }
 }

@@ -46,7 +46,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
     public final String TYPE_DISTRICT = "District";
     public final String TYPE_AREA = "Area";
 
-    TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
+    //TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
 
     public double getDistanceBetweenPostcodes(
             ONSPD_Point aPoint,
@@ -136,7 +136,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         ONSPD_Point r;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
-        r = ONSPDLookups.get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
+        r = Env.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
         return r;
     }
 
@@ -151,7 +151,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
             ONSPD_YM3 NearestYM3ForONSPDLookup,            String level,            String PostcodeF) {
         ONSPD_Point r;
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookupsLevel;
-        ONSPDlookupsLevel = ONSPDLookups.get(level);
+        ONSPDlookupsLevel = Env.getONSPDlookups().get(level);
         TreeMap<String, ONSPD_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
         ONSPDlookupsLevelForNearestYM3ForONSPDLookup = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
         r = ONSPDlookupsLevelForNearestYM3ForONSPDLookup.get(PostcodeF);
@@ -369,7 +369,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         this.Env = env;
         this.Strings = env.Strings;
         this.Files = env.Files;
-        // this.ONSPDLookups = env.getONSPDLookups();
+//        this.ONSPDLookups = env.getONSPDlookups();
     }
 
     public String getDefaultLookupFilename() {
@@ -865,7 +865,7 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
 //            TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
 //            ONSPDLookups = Maps.getONSPDlookups();
             TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDLookupUnitPostcode;
-            ONSPDLookupUnitPostcode = ONSPDLookups.get(TYPE_UNIT);
+            ONSPDLookupUnitPostcode = Env.getONSPDlookups().get(TYPE_UNIT);
             TreeMap<String, ONSPD_Point> ONSPDLookupUnitPostcodeNearestYM3;
             ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
             if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
@@ -1349,5 +1349,6 @@ public class ONSPD_Postcode_Handler extends Generic_UKPostcode_Handler implement
         result.eolIsSignificant(true);
         return result;
     }
+    
 
 }
