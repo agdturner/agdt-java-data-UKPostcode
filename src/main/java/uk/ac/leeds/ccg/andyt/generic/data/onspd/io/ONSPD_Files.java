@@ -46,38 +46,68 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
         setDataDirectory(dataDir);
     }
 
+    private File InputPostcodeDir;
 
+    public File getInputPostcodeDir() {
+        if (InputPostcodeDir == null) {
+            InputPostcodeDir = new File(getInputDataDir(),
+                    getStrings().S_Postcode);
+        }
+        return InputPostcodeDir;
+    }
+    
     private File InputONSPDDir;
 
     public File getInputONSPDDir() {
         if (InputONSPDDir == null) {
-            InputONSPDDir = new File(
-                    getInputPostcodeDir(),
+            InputONSPDDir = new File(getInputPostcodeDir(),
                     getStrings().S_ONSPD);
         }
         return InputONSPDDir;
     }
+    
+    private File GeneratedPostcodeDir;
 
-    private File inputPostcodeDir;
-
-    public File getInputPostcodeDir() {
-        if (inputPostcodeDir == null) {
-            inputPostcodeDir = new File(getInputDataDir(),
+    public File getGeneratedPostcodeDir() {
+        if (GeneratedPostcodeDir == null) {
+            GeneratedPostcodeDir = new File(getGeneratedDataDir(),
                     getStrings().S_Postcode);
         }
-        return inputPostcodeDir;
+        return GeneratedPostcodeDir;
+    }
+    
+    private File GeneratedONSPDDir;
+
+    public File getGeneratedONSPDDir() {
+        if (GeneratedONSPDDir == null) {
+            GeneratedONSPDDir = new File(getGeneratedPostcodeDir(),
+                    getStrings().S_ONSPD);
+        }
+        return GeneratedONSPDDir;
     }
 
-    public File getInputONSPDFile(File dir, String namePrefix, int year, String month, String nameAdd) {
+    /**
+     * 
+     * @param dir
+     * @param namePrefix
+     * @param year
+     * @param month
+     * @param nameAdd
+     * @return 
+     */
+    public File getInputONSPDFile(File dir, String namePrefix, int year, 
+            String month, String nameAdd) {
         File f;
         File d;
+        ONSPD_Strings s = getStrings();
+        String n = "_" + month + "_" + year;
         if (year > 2016) {
-            d = new File(dir, "ONSPD" + "_" + month + "_" + year + nameAdd);
+            d = new File(dir, s.S_ONSPD + n + nameAdd);
         } else {
-            d = new File(dir, "ONSPD" + "_" + month + "_" + year);
+            d = new File(dir, s.S_ONSPD + n);
         }
-        d = new File(d, "Data");
-        f = new File(d, namePrefix + "_" + month + "_" + year + nameAdd + ".csv");
+        d = new File(d, s.s_Data);
+        f = new File(d, namePrefix + n + nameAdd + ".csv");
         return f;
     }
 
@@ -163,10 +193,10 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
         }
         return InputONSPDFiles;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public ONSPD_Strings getStrings() {
         return (ONSPD_Strings) Strings;

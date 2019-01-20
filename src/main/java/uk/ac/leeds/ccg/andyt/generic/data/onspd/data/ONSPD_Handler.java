@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
@@ -38,9 +39,9 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
  */
 public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Serializable {
 
-    protected transient ONSPD_Environment Env;
-    protected transient ONSPD_Files Files;
-    protected transient ONSPD_Strings Strings;
+    protected final transient ONSPD_Environment Env;
+    protected final transient ONSPD_Files Files;
+    protected final transient ONSPD_Strings Strings;
     public final String TYPE_UNIT = "Unit";
     public final String TYPE_SECTOR = "Sector";
     public final String TYPE_DISTRICT = "District";
@@ -63,7 +64,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         //bPoint = Env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
-        } else if (Env.DEBUG_Level == Env.DEBUG_Level_FINEST) {
+        } else if (Env.DEBUG_Level == Generic_Environment.DEBUG_Level_FINEST) {
             System.out.println("<Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>");
             if (aPoint == null) {
                 System.out.println("No point look up for PostcodeID0 " + PostcodeID0 + " in " + yM30v);
@@ -100,8 +101,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                 postcode1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
-        } else if (Env.DEBUG_Level == Env.DEBUG_Level_FINEST) {
-        } else if (Env.DEBUG_Level == Env.DEBUG_Level_FINEST) {
+        } else if (Env.DEBUG_Level == Generic_Environment.DEBUG_Level_FINEST) {
             System.out.println("<Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + "/>");
             if (aPoint == null) {
                 System.out.println("No point look up for " + postcode0 + " in " + yM30v);
@@ -361,14 +361,13 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         }
     }
 
-    public ONSPD_Handler() {
-    }
+//    public ONSPD_Handler() {
+//    }
 
     public ONSPD_Handler(ONSPD_Environment env) {
         this.Env = env;
-        this.Strings = env.Strings;
         this.Files = env.Files;
-//        this.ONSPDLookups = env.getONSPDlookups();
+        this.Strings = env.Strings;
     }
 
     public String getDefaultLookupFilename() {
@@ -385,13 +384,6 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         return "PostcodeLookUp_" + selection
                 //+ "_" + YM3
                 + "_TreeMap_String_Point.dat";
-    }
-
-    public static void main(String[] args) {
-        new ONSPD_Handler().run();
-        //new ONSPD_Handler(inputFile, processedFile).run1();
-        //new ONSPD_Handler(inputFile, processedFile).getPostcodeUnitCensusCodesLookup();
-        //new ONSPD_Handler(inputFile, processedFile).run3();
     }
 
     /**
@@ -413,16 +405,17 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         while (ite.hasNext()) {
             ONSPD_YM3 YM3;
             YM3 = ite.next();
-            File outDir = new File(Env.Files.getGeneratedDataDir(), YM3.toString());
+            File outDir;
+            outDir = new File(Files.getGeneratedONSPDDir(), YM3.toString());
             File outFile = new File(outDir, processedFilename);
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
-                Env.logO("Load " + outFile, true);
+                Env.ge.logO("Load " + outFile, true);
                 postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
-                Env.logO("Format " + f, true);
+                Env.ge.logO("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f, ignorePointsAtOrigin);
                 outDir.mkdirs();
@@ -1124,7 +1117,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             ONSPD_YM3 YM3NearestFormat) {
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
-        Env.log("year " + year + " month " + month);
+        Env.ge.logO("year " + year + " month " + month, true);
         TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;

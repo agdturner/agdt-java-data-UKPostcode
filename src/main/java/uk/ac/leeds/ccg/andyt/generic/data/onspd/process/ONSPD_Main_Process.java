@@ -16,8 +16,7 @@
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.process;
 
 import java.io.File;
-import java.io.PrintWriter;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
@@ -37,12 +36,6 @@ public class ONSPD_Main_Process extends ONSPD_Object {
     protected final ONSPD_Strings Strings;
     protected final ONSPD_Files Files;
 
-    // For logging.
-    File logF;
-    public static transient PrintWriter logPW;
-    File logF0;
-    public static transient PrintWriter logPW0;
-
     public ONSPD_Main_Process(ONSPD_Environment env) {
         super(env);
 //        data = env.data;
@@ -51,65 +44,17 @@ public class ONSPD_Main_Process extends ONSPD_Object {
     }
 
     public static void main(String[] args) {
-        ONSPD_Main_Process p;
-        ONSPD_Environment env;
         File dataDir = new File(System.getProperty("user.dir"), "data");
-        env = new ONSPD_Environment(dataDir);
+        Generic_Environment ge = new Generic_Environment(dataDir);
+        ONSPD_Environment env;
+        env = new ONSPD_Environment(ge, Generic_Environment.DEBUG_Level_FINE);
+        ONSPD_Main_Process p;
         p = new ONSPD_Main_Process(env);
         // Main switches
-        p.doLoadDataIntoCaches = true; // rename/reuse just left here for convenience...
         p.run();
     }
 
     public void run() {
-        logF0 = new File(Files.getOutputDataDir(), "log0.txt");
-        logPW0 = Generic_IO.getPrintWriter(logF0, false); // Overwrite log file.
-
-        File indir;
-        File outdir;
-        File generateddir;
-//        ONSPD_HHOLD_Handler hholdHandler;
-//
-//        indir = Files.getONSPDInputDir();
-//        generateddir = Files.getGeneratedONSPDDir();
-//        outdir = new File(generateddir, "Subsets");
-//        outdir.mkdirs();
-//        hholdHandler = new ONSPD_HHOLD_Handler(Env.Files, Env.Strings, indir);
-//
-//        int chunkSize;
-//        chunkSize = 256; //1024; 512; 256;
-//        doDataProcessingStep1New(indir, outdir, hholdHandler);
-//        doDataProcessingStep2(indir, outdir, hholdHandler, chunkSize);
-
-        logPW.close();
     }
-
-    public static void log0(String s) {
-        logPW.println(s);
-    }
-
-    public static void log1(String s) {
-        System.out.println(s);
-    }
-
-    public static void log(String s) {
-        logPW.println(s);
-        System.out.println(s);
-    }
-
-    public static void logStart(String s) {
-        s = "<" + s + ">";
-        logPW.println(s);
-        System.out.println(s);
-    }
-
-    public static void logEnd(String s) {
-        s = "</" + s + ">";
-        logPW.println(s);
-        System.out.println(s);
-    }
-
-    boolean doJavaCodeGeneration = false;
-    boolean doLoadDataIntoCaches = false;
 
 }
