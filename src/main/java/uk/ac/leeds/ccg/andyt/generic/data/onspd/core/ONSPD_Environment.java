@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -38,11 +39,6 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     public final transient ONSPD_Files Files;
 
     /**
-     * Logging levels.
-     */
-    public int DEBUG_Level;
-
-    /**
      * For storing an instance of ONSPD_Handler for convenience.
      */
     private ONSPD_Handler Handler;
@@ -53,12 +49,11 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 //    public ONSPD_Data data;
     public transient static final String EOL = System.getProperty("line.separator");
 
-    public ONSPD_Environment(Generic_Environment ge, int DEBUG_Level) {
+    public ONSPD_Environment(Generic_Environment ge) {
         //Memory_Threshold = 3000000000L;
         this.ge = ge;
         Strings = new ONSPD_Strings();
         Files = new ONSPD_Files(Strings, ge.getFiles().getDataDir());
-        this.DEBUG_Level = DEBUG_Level;
     }
 
     /**
@@ -174,9 +169,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 
     protected void initPostcode_Handler() {
         if (Handler == null) {
-            ONSPD_Environment ONSPD_Env = new ONSPD_Environment(ge, 
-                    Generic_Environment.DEBUG_Level_FINE);
-            Handler = new ONSPD_Handler(ONSPD_Env);
+            Handler = new ONSPD_Handler(this);
         }
     }
 

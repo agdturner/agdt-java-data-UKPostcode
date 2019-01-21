@@ -48,14 +48,9 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
     public final String TYPE_AREA = "Area";
 
     //TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
-    public double getDistanceBetweenPostcodes(
-            ONSPD_Point aPoint,
-            ONSPD_Point bPoint,
-            ONSPD_Point cPoint,
-            ONSPD_Point dPoint,
-            ONSPD_YM3 yM30v,
-            ONSPD_YM3 yM31v,
-            ONSPD_ID PostcodeID0,
+    public double getDistanceBetweenPostcodes(ONSPD_Point aPoint, 
+            ONSPD_Point bPoint, ONSPD_Point cPoint, ONSPD_Point dPoint, 
+            ONSPD_YM3 yM30v, ONSPD_YM3 yM31v, ONSPD_ID PostcodeID0, 
             ONSPD_ID PostcodeID1) {
         double result = 0.0d;
         //ONSPD_Point aPoint;
@@ -64,61 +59,71 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         //bPoint = Env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
-        } else if (Env.DEBUG_Level == Generic_Environment.DEBUG_Level_FINEST) {
-            System.out.println("<Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>");
+        } else {
+            Env.ge.log("<Issue calculating distance between PostcodeID0 "
+                    + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>",
+                    true);
             if (aPoint == null) {
-                System.out.println("No point look up for PostcodeID0 " + PostcodeID0 + " in " + yM30v);
+                Env.ge.log("No point look up for PostcodeID0 " + PostcodeID0
+                        + " in " + yM30v, true);
                 if (cPoint != null) {
-                    System.out.println("However there is a look up for PostcodeID0 " + PostcodeID0 + " in " + yM31v + "! Maybe use this instead?");
+                    Env.ge.log("However there is a look up for PostcodeID0 "
+                            + PostcodeID0 + " in " + yM31v
+                            + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                System.out.println("No point look up for PostcodeID1 " + PostcodeID1 + " in " + yM31v);
+                Env.ge.log("No point look up for PostcodeID1 " + PostcodeID1
+                        + " in " + yM31v, true);
                 if (dPoint != null) {
-                    System.out.println("However there is a look up for PostcodeID1 " + PostcodeID1 + " in " + yM30v + "! Maybe use this instead?");
+                    Env.ge.log("However there is a look up for PostcodeID1 "
+                            + PostcodeID1 + " in " + yM30v
+                            + "! Maybe use this instead?", true);
                 }
             }
-            System.out.println("</Issue calculating distance between PostcodeID0 " + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">");
+            Env.ge.log("</Issue calculating distance between PostcodeID0 "
+                    + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">",
+                    true);
         }
         return result;
     }
 
-    public double getDistanceBetweenPostcodes(
-            ONSPD_YM3 yM30v,
-            ONSPD_YM3 yM31v,
-            String postcode0,
-            String postcode1) {
+    public double getDistanceBetweenPostcodes(ONSPD_YM3 yM30v, ONSPD_YM3 yM31v,
+            String postcode0, String postcode1) {
         double result = 0.0d;
         ONSPD_Point aPoint;
-        aPoint = getPointFromPostcode(
-                yM30v,
-                TYPE_UNIT,
-                postcode0);
+        aPoint = getPointFromPostcode(yM30v, TYPE_UNIT, postcode0);
         ONSPD_Point bPoint;
-        bPoint = getPointFromPostcode(
-                yM31v,
-                TYPE_UNIT,
-                postcode1);
+        bPoint = getPointFromPostcode(yM31v, TYPE_UNIT, postcode1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
-        } else if (Env.DEBUG_Level == Generic_Environment.DEBUG_Level_FINEST) {
-            System.out.println("<Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + "/>");
+        } else {
+            Env.ge.log("<Issue calculating distance between PostcodeID0 "
+                    + postcode0 + " and PostcodeID1 " + postcode1 + "/>",
+                    true);
             if (aPoint == null) {
-                System.out.println("No point look up for " + postcode0 + " in " + yM30v);
+                Env.ge.log("No point look up for PostcodeID0 " + postcode0
+                        + " in " + yM30v, true);
                 aPoint = getPointFromPostcode(yM31v, TYPE_UNIT, postcode0);
                 if (aPoint != null) {
-                    System.out.println("However there is a look up for " + postcode0 + " in " + yM31v + "! Maybe use this instead?");
+                    Env.ge.log("However there is a look up for PostcodeID0 "
+                            + postcode0 + " in " + yM31v
+                            + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                System.out.println("No point look up for " + postcode1 + " in " + yM31v);
+                Env.ge.log("No point look up for PostcodeID1 " + postcode1
+                        + " in " + yM31v, true);
                 bPoint = getPointFromPostcode(yM30v, TYPE_UNIT, postcode1);
                 if (bPoint != null) {
-                    System.out.println("However there is a look up for " + postcode1 + " in " + yM30v + "! Maybe use this instead?");
+                    Env.ge.log("However there is a look up for PostcodeID1 "
+                            + postcode1 + " in " + yM30v
+                            + "! Maybe use this instead?", true);
                 }
-
             }
-            System.out.println("</Issue calculating distance between postcodes: " + postcode0 + " and " + postcode1 + ">");
+            Env.ge.log("</Issue calculating distance between PostcodeID0 "
+                    + postcode0 + " and PostcodeID1 " + postcode1 + ">",
+                    true);
         }
         return result;
     }
@@ -135,7 +140,8 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         ONSPD_Point r;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
-        r = Env.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup).get(formattedPostcode);
+        r = Env.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup)
+                .get(formattedPostcode);
         return r;
     }
 
@@ -147,13 +153,14 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
      * @return
      */
     public ONSPD_Point getPointFromPostcodeNew(
-            ONSPD_YM3 NearestYM3ForONSPDLookup, String level, String PostcodeF) {
+            ONSPD_YM3 NearestYM3ForONSPDLookup, String level, 
+            String PostcodeF) {
         ONSPD_Point r;
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookupsLevel;
         ONSPDlookupsLevel = Env.getONSPDlookups().get(level);
-        TreeMap<String, ONSPD_Point> ONSPDlookupsLevelForNearestYM3ForONSPDLookup;
-        ONSPDlookupsLevelForNearestYM3ForONSPDLookup = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
-        r = ONSPDlookupsLevelForNearestYM3ForONSPDLookup.get(PostcodeF);
+        TreeMap<String, ONSPD_Point> l;
+        l = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
+        r = l.get(PostcodeF);
         return r;
     }
 
@@ -363,7 +370,6 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
 
 //    public ONSPD_Handler() {
 //    }
-
     public ONSPD_Handler(ONSPD_Environment env) {
         this.Env = env;
         this.Files = env.Files;
@@ -410,12 +416,12 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             File outFile = new File(outDir, processedFilename);
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
-                Env.ge.logO("Load " + outFile, true);
+                Env.ge.log("Load " + outFile, true);
                 postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
-                Env.ge.logO("Format " + f, true);
+                Env.ge.log("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f, ignorePointsAtOrigin);
                 outDir.mkdirs();
@@ -1117,7 +1123,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             ONSPD_YM3 YM3NearestFormat) {
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
-        Env.ge.logO("year " + year + " month " + month, true);
+        Env.ge.log("year " + year + " month " + month, true);
         TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;
