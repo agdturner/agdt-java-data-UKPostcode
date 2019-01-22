@@ -48,9 +48,9 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
     public final String TYPE_AREA = "Area";
 
     //TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
-    public double getDistanceBetweenPostcodes(ONSPD_Point aPoint, 
-            ONSPD_Point bPoint, ONSPD_Point cPoint, ONSPD_Point dPoint, 
-            ONSPD_YM3 yM30v, ONSPD_YM3 yM31v, ONSPD_ID PostcodeID0, 
+    public double getDistanceBetweenPostcodes(ONSPD_Point aPoint,
+            ONSPD_Point bPoint, ONSPD_Point cPoint, ONSPD_Point dPoint,
+            ONSPD_YM3 yM30v, ONSPD_YM3 yM31v, ONSPD_ID PostcodeID0,
             ONSPD_ID PostcodeID1) {
         double result = 0.0d;
         //ONSPD_Point aPoint;
@@ -153,7 +153,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
      * @return
      */
     public ONSPD_Point getPointFromPostcodeNew(
-            ONSPD_YM3 NearestYM3ForONSPDLookup, String level, 
+            ONSPD_YM3 NearestYM3ForONSPDLookup, String level,
             String PostcodeF) {
         ONSPD_Point r;
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookupsLevel;
@@ -527,15 +527,13 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         return null;
     }
 
-    public void run(File logDir) {
+    public void run(int logID) {
         String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
         TreeMap<ONSPD_YM3, File> InputONSPDFiles;
         InputONSPDFiles = Files.getInputONSPDFiles();
-        TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> postcodeUnitPointLookups;
-        postcodeUnitPointLookups = getPostcodeUnitPointLookups(
-                ignorePointsAtOrigin,
-                InputONSPDFiles,
+        TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> l;
+        l = getPostcodeUnitPointLookups(ignorePointsAtOrigin, InputONSPDFiles,
                 processedFilename);
     }
 
