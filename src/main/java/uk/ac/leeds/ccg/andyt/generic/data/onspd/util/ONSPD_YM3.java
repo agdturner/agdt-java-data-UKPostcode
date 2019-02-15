@@ -29,27 +29,59 @@ public class ONSPD_YM3 implements Comparable, Serializable {
 
     private final int Year;
     private final int Month;
+    private static transient final String UNDERSCORE = "_";
 
+    /**
+     * Creates a new instance.
+     *
+     * @param YM3 Expected to be of the form YYYY_MMM (e.g. "2018_Dec") where:
+     * YYYY is a year (e.g. "2018"); and, MMM is the first three letters of the
+     * month name (e.g. Jan). The case of MMM is ignored, so DEC is treated the
+     * same as dec etc.).
+     */
     public ONSPD_YM3(String YM3) {
         String[] split;
-        split = YM3.split("_");
+        split = YM3.split(UNDERSCORE);
         Year = Integer.valueOf(split[0]);
         Month = Generic_Time.getMonthInt(split[1]);
     }
 
+    /**
+     * Creates a new instance.
+     *
+     * @param y The year e.g. "2018".
+     * @param m The first 3 letters of the month name e.g. "Jan". The case of
+     * MMM is ignored, so DEC is treated the same as dec etc.).
+     */
+    public ONSPD_YM3(String y, String m) {
+        Year = Integer.valueOf(y);
+        Month = Generic_Time.getMonthInt(m);
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @param Year The year e.g. 2018.
+     * @param Month January is 1, February is 2,... December is 12.
+     * {@link Generic_Time.getMonthInt(String)}
+     */
     public ONSPD_YM3(int Year, int Month) {
         this.Year = Year;
         this.Month = Month;
     }
 
-    public ONSPD_YM3(ONSPD_YM3 YM3) {
-        this.Year = YM3.getYear();
-        this.Month = YM3.getMonth();
+    /**
+     * Creates a new instance that is effectively a clone of i.
+     * @param i The instance to duplicate.
+     */
+    public ONSPD_YM3(ONSPD_YM3 i) {
+        this(i.getYear(), i.getMonth());
     }
 
     @Override
     public String toString() {
-        return "" + Integer.toString(getYear()) + "_" + Generic_Time.getMonth3Letters(getMonth());
+        return Integer.toString(getYear()) + UNDERSCORE
+                + Generic_Time.getMonth3Letters(getMonth());
     }
 
     @Override
