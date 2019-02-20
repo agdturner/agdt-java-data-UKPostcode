@@ -25,8 +25,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
-import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
@@ -37,11 +36,11 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
  * A class for adding coordinate data and area codes for UK postcodes.
  * https://geoportal.statistics.gov.uk/Docs/PostCodes/ONSPD_AUG_2013_csv.zip
  */
-public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Serializable {
+public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializable {
 
-    protected final transient ONSPD_Environment Env;
-    protected final transient ONSPD_Files Files;
-    protected final transient ONSPD_Strings Strings;
+    protected final transient ONSPD_Environment env;
+    protected final transient ONSPD_Files files;
+    protected final transient ONSPD_Strings strings;
     public final String TYPE_UNIT = "Unit";
     public final String TYPE_SECTOR = "Sector";
     public final String TYPE_DISTRICT = "District";
@@ -54,34 +53,34 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             ONSPD_ID PostcodeID1) {
         double result = 0.0d;
         //ONSPD_Point aPoint;
-        //aPoint = Env.getSHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
+        //aPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
         //ONSPD_Point bPoint;
-        //bPoint = Env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
+        //bPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else {
-            Env.ge.log("<Issue calculating distance between PostcodeID0 "
+            env.ge.log("<Issue calculating distance between PostcodeID0 "
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>",
                     true);
             if (aPoint == null) {
-                Env.ge.log("No point look up for PostcodeID0 " + PostcodeID0
+                env.ge.log("No point look up for PostcodeID0 " + PostcodeID0
                         + " in " + yM30v, true);
                 if (cPoint != null) {
-                    Env.ge.log("However there is a look up for PostcodeID0 "
+                    env.ge.log("However there is a look up for PostcodeID0 "
                             + PostcodeID0 + " in " + yM31v
                             + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                Env.ge.log("No point look up for PostcodeID1 " + PostcodeID1
+                env.ge.log("No point look up for PostcodeID1 " + PostcodeID1
                         + " in " + yM31v, true);
                 if (dPoint != null) {
-                    Env.ge.log("However there is a look up for PostcodeID1 "
+                    env.ge.log("However there is a look up for PostcodeID1 "
                             + PostcodeID1 + " in " + yM30v
                             + "! Maybe use this instead?", true);
                 }
             }
-            Env.ge.log("</Issue calculating distance between PostcodeID0 "
+            env.ge.log("</Issue calculating distance between PostcodeID0 "
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">",
                     true);
         }
@@ -98,30 +97,30 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else {
-            Env.ge.log("<Issue calculating distance between PostcodeID0 "
+            env.ge.log("<Issue calculating distance between PostcodeID0 "
                     + postcode0 + " and PostcodeID1 " + postcode1 + "/>",
                     true);
             if (aPoint == null) {
-                Env.ge.log("No point look up for PostcodeID0 " + postcode0
+                env.ge.log("No point look up for PostcodeID0 " + postcode0
                         + " in " + yM30v, true);
                 aPoint = getPointFromPostcode(yM31v, TYPE_UNIT, postcode0);
                 if (aPoint != null) {
-                    Env.ge.log("However there is a look up for PostcodeID0 "
+                    env.ge.log("However there is a look up for PostcodeID0 "
                             + postcode0 + " in " + yM31v
                             + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                Env.ge.log("No point look up for PostcodeID1 " + postcode1
+                env.ge.log("No point look up for PostcodeID1 " + postcode1
                         + " in " + yM31v, true);
                 bPoint = getPointFromPostcode(yM30v, TYPE_UNIT, postcode1);
                 if (bPoint != null) {
-                    Env.ge.log("However there is a look up for PostcodeID1 "
+                    env.ge.log("However there is a look up for PostcodeID1 "
                             + postcode1 + " in " + yM30v
                             + "! Maybe use this instead?", true);
                 }
             }
-            Env.ge.log("</Issue calculating distance between PostcodeID0 "
+            env.ge.log("</Issue calculating distance between PostcodeID0 "
                     + postcode0 + " and PostcodeID1 " + postcode1 + ">",
                     true);
         }
@@ -140,7 +139,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         ONSPD_Point r;
         String formattedPostcode;
         formattedPostcode = formatPostcode(postcode);
-        r = Env.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup)
+        r = env.getONSPDlookups().get(level).get(nearestYM3ForONSPDLookup)
                 .get(formattedPostcode);
         return r;
     }
@@ -157,7 +156,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             String PostcodeF) {
         ONSPD_Point r;
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDlookupsLevel;
-        ONSPDlookupsLevel = Env.getONSPDlookups().get(level);
+        ONSPDlookupsLevel = env.getONSPDlookups().get(level);
         TreeMap<String, ONSPD_Point> l;
         l = ONSPDlookupsLevel.get(NearestYM3ForONSPDLookup);
         r = l.get(PostcodeF);
@@ -371,9 +370,9 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
 //    public ONSPD_Handler() {
 //    }
     public ONSPD_Handler(ONSPD_Environment env) {
-        this.Env = env;
-        this.Files = env.Files;
-        this.Strings = env.Strings;
+        this.env = env;
+        this.files = env.Files;
+        this.strings = env.Strings;
     }
 
     public String getDefaultLookupFilename() {
@@ -412,16 +411,16 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             ONSPD_YM3 YM3;
             YM3 = ite.next();
             File outDir;
-            outDir = new File(Files.getGeneratedONSPDDir(), YM3.toString());
+            outDir = new File(files.getGeneratedONSPDDir(), YM3.toString());
             File outFile = new File(outDir, processedFilename);
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
-                Env.ge.log("Load " + outFile, true);
+                env.ge.log("Load " + outFile, true);
                 postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
-                Env.ge.log("Format " + f, true);
+                env.ge.log("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f, ignorePointsAtOrigin);
                 outDir.mkdirs();
@@ -531,7 +530,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
         String processedFilename = getDefaultLookupFilename();
         boolean ignorePointsAtOrigin = true;
         TreeMap<ONSPD_YM3, File> InputONSPDFiles;
-        InputONSPDFiles = Files.getInputONSPDFiles();
+        InputONSPDFiles = files.getInputONSPDFiles();
         TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> l;
         l = getPostcodeUnitPointLookups(ignorePointsAtOrigin, InputONSPDFiles,
                 processedFilename);
@@ -554,7 +553,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                 numerals_HashSet);
 //        File oaCodeLookUpFile = new File(
 //                directory,
-//                "oaCodeLookUp_HashmapStringString" + Strings.sBinaryFileExtension);
+//                "oaCodeLookUp_HashmapStringString" + strings.sBinaryFileExtension);
 //        Generic_IO.writeObject(oaCodeLookUp, oaCodeLookUpFile);
 //        Generic_IO.writeObject(oaCodeLookUp, outputFile);
         //oaCodeLookUp = (HashMap<String, String>) Generic_IO.readObject(lookupFile);
@@ -869,7 +868,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
 //            TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
 //            ONSPDLookups = Maps.getONSPDlookups();
             TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>> ONSPDLookupUnitPostcode;
-            ONSPDLookupUnitPostcode = Env.getONSPDlookups().get(TYPE_UNIT);
+            ONSPDLookupUnitPostcode = env.getONSPDlookups().get(TYPE_UNIT);
             TreeMap<String, ONSPD_Point> ONSPDLookupUnitPostcodeNearestYM3;
             ONSPDLookupUnitPostcodeNearestYM3 = ONSPDLookupUnitPostcode.get(NearestYM3ForONSPDLookup);
             if (ONSPDLookupUnitPostcodeNearestYM3 == null) {
@@ -957,7 +956,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
                         ONSPD_Record_EastingNorthing rec;
-                        rec = new ONSPD_Record_EastingNorthing(Env, line);
+                        rec = new ONSPD_Record_EastingNorthing(env, line);
                         int easting = rec.getOseast1m();
                         int northing = rec.getOsnrth1m();
                         ONSPD_Point point;
@@ -1121,7 +1120,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             ONSPD_YM3 YM3NearestFormat) {
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
-        Env.ge.log("year " + year + " month " + month, true);
+        env.ge.log("year " + year + " month " + month, true);
         TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;
@@ -1139,42 +1138,42 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                     case StreamTokenizer.TT_EOL:
                         ONSPD_AbstractRecord rec;
                         if (year < 2011 || (year == 2011 && month < 4)) {
-                            rec = new ONSPD_Record_2008_02Feb(Env, line);
+                            rec = new ONSPD_Record_2008_02Feb(env, line);
                         } else if (year < 2012 || (year == 2012 && month < 8)) {
-                            rec = new ONSPD_Record_2011_05May(Env, line);
+                            rec = new ONSPD_Record_2011_05May(env, line);
                         } else if (year == 2012 && month < 11) {
-                            rec = new ONSPD_Record_2011_05May(Env, line);
-                            //rec = new ONSPD_Record_2012_08Nov(Env, line);
+                            rec = new ONSPD_Record_2011_05May(env, line);
+                            //rec = new ONSPD_Record_2012_08Nov(env, line);
                         } else if (year < 2013 || (year == 2013 && month < 2)) {
-                            rec = new ONSPD_Record_2012_11Nov(Env, line);
+                            rec = new ONSPD_Record_2012_11Nov(env, line);
                         } else if (year == 2013 && month < 5) {
-                            rec = new ONSPD_Record_2013_02Feb(Env, line);
+                            rec = new ONSPD_Record_2013_02Feb(env, line);
                         } else if (year == 2013 && month < 8) {
-                            rec = new ONSPD_Record_2013_05May(Env, line);
+                            rec = new ONSPD_Record_2013_05May(env, line);
                         } else if (year < 2014 || (year == 2014 && month < 11)) {
-                            rec = new ONSPD_Record_2013_08Aug(Env, line);
+                            rec = new ONSPD_Record_2013_08Aug(env, line);
                         } else if (year < 2015 || (year == 2015 && month < 5)) {
-                            rec = new ONSPD_Record_2014_11Nov(Env, line);
+                            rec = new ONSPD_Record_2014_11Nov(env, line);
                         } else if (year == 2015 && month < 8) {
-                            rec = new ONSPD_Record_2015_05May(Env, line);
+                            rec = new ONSPD_Record_2015_05May(env, line);
                         } else if (year < 2016 || (year == 2016 && month < 2)) {
-                            rec = new ONSPD_Record_2015_08Aug(Env, line);
+                            rec = new ONSPD_Record_2015_08Aug(env, line);
                         } else {
-                            rec = new ONSPD_Record_2016_02Feb(Env, line);
+                            rec = new ONSPD_Record_2016_02Feb(env, line);
                         }
 //                        if (YM3NearestFormat.equalsIgnoreCase("2016_Feb")) {
-//                            rec = new ONSPD_Record_2016_02Feb(Env, line);
+//                            rec = new ONSPD_Record_2016_02Feb(env, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_Aug")) {
-//                            rec = new ONSPD_Record_2015_08Aug(Env, line);
+//                            rec = new ONSPD_Record_2015_08Aug(env, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_May")) {
-//                            rec = new ONSPD_Record_2015_05May(Env, line);
+//                            rec = new ONSPD_Record_2015_05May(env, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2014_Nov")) {
-//                            rec = new ONSPD_Record_2014_11Nov(Env, line);
+//                            rec = new ONSPD_Record_2014_11Nov(env, line);
 //                        } else {
-//                            rec = new ONSPD_Record_2013_08Aug(Env, line);
+//                            rec = new ONSPD_Record_2013_08Aug(env, line);
 //                        }
                         String value = "";
-                        if (level.equalsIgnoreCase(Strings.S_OA)) {
+                        if (level.equalsIgnoreCase(strings.S_OA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getOa01();
@@ -1192,7 +1191,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                                 }
                             }
                         }
-                        if (level.equalsIgnoreCase(Strings.S_LSOA)) {
+                        if (level.equalsIgnoreCase(strings.S_LSOA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getLsoa01();
@@ -1208,7 +1207,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                                 }
                             }
                         }
-                        if (level.equalsIgnoreCase(Strings.S_MSOA)) {
+                        if (level.equalsIgnoreCase(strings.S_MSOA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getMsoa01();
@@ -1226,19 +1225,19 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
                         }
                         String postcode = rec.getPcd();
                         //String PostcodeF = rec.getPostcodeF();
-                        if (level.equalsIgnoreCase(Strings.S_PostcodeUnit)) {
+                        if (level.equalsIgnoreCase(strings.S_PostcodeUnit)) {
                             value = postcode;
                         }
-                        if (level.equalsIgnoreCase(Strings.S_PostcodeSector)) {
+                        if (level.equalsIgnoreCase(strings.S_PostcodeSector)) {
                             value = getPostcodeSector(postcode);
                         }
-                        if (level.equalsIgnoreCase(Strings.S_PostcodeDistrict)) {
+                        if (level.equalsIgnoreCase(strings.S_PostcodeDistrict)) {
                             value = getPostcodeDistrict(postcode);
                         }
-                        if (level.equalsIgnoreCase(Strings.S_ParliamentaryConstituency)) {
+                        if (level.equalsIgnoreCase(strings.S_ParliamentaryConstituency)) {
                             value = rec.getPcon();
                         }
-                        if (level.equalsIgnoreCase(Strings.S_StatisticalWard)) {
+                        if (level.equalsIgnoreCase(strings.S_StatisticalWard)) {
                             value = rec.getStatsward();
                         }
                         result.put(rec.getPostcodeF(), value);
@@ -1286,7 +1285,7 @@ public class ONSPD_Handler extends Generic_UKPostcode_Handler implements Seriali
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPD_Record_2013_08Aug rec = new ONSPD_Record_2013_08Aug(Env, line);
+                        ONSPD_Record_2013_08Aug rec = new ONSPD_Record_2013_08Aug(env, line);
                         String[] values = new String[4];
                         values[0] = rec.getOa01();
                         values[1] = rec.getLsoa01();

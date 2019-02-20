@@ -199,6 +199,6 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
      * @return
      */
     public ONSPD_Strings getStrings() {
-        return (ONSPD_Strings) Strings;
+        return (ONSPD_Strings) strings;
     }
 }
