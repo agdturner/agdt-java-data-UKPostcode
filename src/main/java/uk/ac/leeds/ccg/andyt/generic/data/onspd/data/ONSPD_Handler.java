@@ -40,7 +40,6 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
 
     protected final transient ONSPD_Environment env;
     protected final transient ONSPD_Files files;
-    protected final transient ONSPD_Strings strings;
     public final String TYPE_UNIT = "Unit";
     public final String TYPE_SECTOR = "Sector";
     public final String TYPE_DISTRICT = "District";
@@ -372,7 +371,6 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
     public ONSPD_Handler(ONSPD_Environment env) {
         this.env = env;
         this.files = env.Files;
-        this.strings = env.Strings;
     }
 
     public String getDefaultLookupFilename() {
@@ -1173,7 +1171,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
 //                            rec = new ONSPD_Record_2013_08Aug(env, line);
 //                        }
                         String value = "";
-                        if (level.equalsIgnoreCase(strings.S_OA)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_OA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getOa01();
@@ -1191,7 +1189,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                                 }
                             }
                         }
-                        if (level.equalsIgnoreCase(strings.S_LSOA)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_LSOA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getLsoa01();
@@ -1207,7 +1205,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                                 }
                             }
                         }
-                        if (level.equalsIgnoreCase(strings.S_MSOA)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_MSOA)) {
                             if (censusYear == 2001) {
                                 if (rec instanceof ONSPD_AbstractRecord1) {
                                     value = ((ONSPD_AbstractRecord1) rec).getMsoa01();
@@ -1225,19 +1223,19 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         String postcode = rec.getPcd();
                         //String PostcodeF = rec.getPostcodeF();
-                        if (level.equalsIgnoreCase(strings.S_PostcodeUnit)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_PostcodeUnit)) {
                             value = postcode;
                         }
-                        if (level.equalsIgnoreCase(strings.S_PostcodeSector)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_PostcodeSector)) {
                             value = getPostcodeSector(postcode);
                         }
-                        if (level.equalsIgnoreCase(strings.S_PostcodeDistrict)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_PostcodeDistrict)) {
                             value = getPostcodeDistrict(postcode);
                         }
-                        if (level.equalsIgnoreCase(strings.S_ParliamentaryConstituency)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_ParliamentaryConstituency)) {
                             value = rec.getPcon();
                         }
-                        if (level.equalsIgnoreCase(strings.S_StatisticalWard)) {
+                        if (level.equalsIgnoreCase(ONSPD_Strings.s_StatisticalWard)) {
                             value = rec.getStatsward();
                         }
                         result.put(rec.getPostcodeF(), value);

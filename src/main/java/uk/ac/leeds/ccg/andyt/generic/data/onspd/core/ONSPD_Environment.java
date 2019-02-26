@@ -35,7 +35,6 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
         implements Serializable {
 
     public final transient Generic_Environment ge;
-    public final transient ONSPD_Strings Strings;
     public final transient ONSPD_Files Files;
 
     /**
@@ -52,8 +51,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     public ONSPD_Environment(Generic_Environment ge) {
         //Memory_Threshold = 3000000000L;
         this.ge = ge;
-        Strings = new ONSPD_Strings();
-        Files = new ONSPD_Files(Strings, ge.getFiles().getDataDir());
+        Files = new ONSPD_Files(ge.getFiles().getDataDir());
     }
 
     /**

@@ -17,7 +17,6 @@ package uk.ac.leeds.ccg.andyt.generic.data.onspd.process;
 
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Object;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Collection;
@@ -31,14 +30,10 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Object;
 public class ONSPD_Main_Process extends ONSPD_Object {
 
     // For convenience
-//    protected final ONSPD_Data data;
-    protected final ONSPD_Strings Strings;
     protected final ONSPD_Files Files;
 
     public ONSPD_Main_Process(ONSPD_Environment env) {
         super(env);
-//        data = env.data;
-        Strings = env.Strings;
         Files = env.Files;
     }
 
