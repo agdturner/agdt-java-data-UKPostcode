@@ -16,9 +16,8 @@
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.io;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_Files;
+import uk.ac.leeds.ccg.andyt.data.io.Data_Files;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 
@@ -26,19 +25,13 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
  *
  * @author geoagdt
  */
-public class ONSPD_Files extends Generic_Files implements Serializable {
+public class ONSPD_Files extends Data_Files {
 
     /**
+     * @param dir
      */
-    public ONSPD_Files() {
-        super();
-    }
-
-    /**
-     * @param dataDir
-     */
-    public ONSPD_Files(File dataDir) {
-        super(dataDir);
+    public ONSPD_Files(File dir) {
+        super(dir);
     }
 
     private File InputPostcodeDir;
@@ -92,7 +85,6 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
      */
     public File getInputONSPDFile(File dir, String namePrefix, int year, 
             String month, String nameAdd) {
-        File f;
         File d;
         String n = "_" + month + "_" + year;
         if (year > 2016) {
@@ -101,7 +93,7 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
             d = new File(dir, ONSPD_Strings.s_ONSPD + n);
         }
         d = new File(d, ONSPD_Strings.s_Data);
-        f = new File(d, namePrefix + n + nameAdd + ".csv");
+        File f = new File(d, namePrefix + n + nameAdd + ".csv");
         return f;
     }
 
@@ -122,8 +114,7 @@ public class ONSPD_Files extends Generic_Files implements Serializable {
     public TreeMap<ONSPD_YM3, File> getInputONSPDFiles() {
         if (InputONSPDFiles == null) {
             InputONSPDFiles = new TreeMap<>();
-            File d;
-            d = getInputONSPDDir();
+            File d  = getInputONSPDDir();
             File f;
             String namePrefix;
             String month;
