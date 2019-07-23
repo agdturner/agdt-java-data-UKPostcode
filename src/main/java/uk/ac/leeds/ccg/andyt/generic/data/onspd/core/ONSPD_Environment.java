@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.logging.Level;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -51,7 +50,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     public ONSPD_Environment(Generic_Environment ge) {
         //Memory_Threshold = 3000000000L;
         this.ge = ge;
-        Files = new ONSPD_Files(ge.getFiles().getDataDir());
+        Files = new ONSPD_Files(ge.files.getDataDir());
     }
 
     /**

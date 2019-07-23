@@ -414,7 +414,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
                 env.ge.log("Load " + outFile, true);
-                postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
+                postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) env.ge.io.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
@@ -422,7 +422,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f, ignorePointsAtOrigin);
                 outDir.mkdirs();
-                Generic_IO.writeObject(postcodeUnitPointLookup, outFile);
+                env.ge.io.writeObject(postcodeUnitPointLookup, outFile);
             }
             result.put(YM3, postcodeUnitPointLookup);
         }
@@ -465,7 +465,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
         lookup = readONSPDIntoTreeMapPostcodeString(infile, level, CensusYear, YM3NearestFormat);
-        Generic_IO.writeObject(lookup, outFile);
+        env.ge.io.writeObject(lookup, outFile);
 //        //lookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
         return lookup;
     }
@@ -599,7 +599,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             //int recordCounter = 0;
             BufferedReader br;
-            br = Generic_IO.getBufferedReader(file);
+            br = env.ge.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
@@ -636,15 +636,15 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
     }
 
     public TreeMap<String, ONSPD_Point> getStringToONSPD_PointLookup(File file) {
-        return (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(file);
+        return (TreeMap<String, ONSPD_Point>) env.ge.io.readObject(file);
     }
 
     public TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
-        return (TreeMap<String, String[]>) Generic_IO.readObject(file);
+        return (TreeMap<String, String[]>) env.ge.io.readObject(file);
     }
 
     public HashMap<String, String> getStringToStringLookup(File file) {
-        return (HashMap<String, String>) Generic_IO.readObject(file);
+        return (HashMap<String, String>) env.ge.io.readObject(file);
     }
 
     /**
@@ -943,12 +943,12 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_IO.getBufferedReader(file);
+            br = env.ge.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_IO.skipline(aStreamTokenizer);
+            env.ge.io.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1124,12 +1124,12 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_IO.getBufferedReader(file);
+            br = env.ge.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_IO.skipline(aStreamTokenizer);
+            env.ge.io.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1273,13 +1273,13 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = Generic_IO.getBufferedReader(file);
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
+            br = env.ge.io.getBufferedReader(file);
+            StreamTokenizer st = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            Generic_IO.skipline(aStreamTokenizer);
-            tokenType = aStreamTokenizer.nextToken();
+            env.ge.io.skipline(st);
+            tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
@@ -1296,10 +1296,10 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
-                        line = aStreamTokenizer.sval;
+                        line = st.sval;
                         break;
                 }
-                tokenType = aStreamTokenizer.nextToken();
+                tokenType = st.nextToken();
             }
             br.close();
         } catch (IOException aIOException) {
