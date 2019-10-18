@@ -38,8 +38,7 @@ public class ONSPD_Files extends Data_Files {
 
     public File getInputPostcodeDir() {
         if (InputPostcodeDir == null) {
-            InputPostcodeDir = new File(getInputDataDir(),
-                    ONSPD_Strings.s_Postcode);
+            InputPostcodeDir = new File(getInputDir(), ONSPD_Strings.s_Postcode);
         }
         return InputPostcodeDir;
     }
@@ -58,7 +57,7 @@ public class ONSPD_Files extends Data_Files {
 
     public File getGeneratedPostcodeDir() {
         if (GeneratedPostcodeDir == null) {
-            GeneratedPostcodeDir = new File(getGeneratedDataDir(),
+            GeneratedPostcodeDir = new File(getGeneratedDir(),
                     ONSPD_Strings.s_Postcode);
         }
         return GeneratedPostcodeDir;

@@ -50,7 +50,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     public ONSPD_Environment(Generic_Environment ge) {
         //Memory_Threshold = 3000000000L;
         this.ge = ge;
-        Files = new ONSPD_Files(ge.files.getDataDir());
+        Files = new ONSPD_Files(ge.files.getDir());
     }
 
     /**

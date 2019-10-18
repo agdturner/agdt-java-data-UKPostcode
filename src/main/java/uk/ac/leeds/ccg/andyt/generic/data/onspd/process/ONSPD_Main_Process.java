@@ -15,6 +15,9 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.process;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
@@ -38,12 +41,15 @@ public class ONSPD_Main_Process extends ONSPD_Object {
     }
 
     public static void main(String[] args) {
-        ONSPD_Environment env;
-        env = new ONSPD_Environment(new Generic_Environment());
-        ONSPD_Main_Process p;
-        p = new ONSPD_Main_Process(env);
-        // Main switches
-        p.run();
+        try {
+            ONSPD_Environment env = new ONSPD_Environment(new Generic_Environment());
+            ONSPD_Main_Process p;
+            p = new ONSPD_Main_Process(env);
+            // Main switches
+            p.run();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     public void run() {
