@@ -16,6 +16,7 @@
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.core;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +50,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 //    public ONSPD_Data data;
     public transient static final String EOL = System.getProperty("line.separator");
 
-    public ONSPD_Environment(Data_Environment de) {
+    public ONSPD_Environment(Data_Environment de) throws IOException {
         //Memory_Threshold = 3000000000L;
         this.de = de;
         this.env = de.env;

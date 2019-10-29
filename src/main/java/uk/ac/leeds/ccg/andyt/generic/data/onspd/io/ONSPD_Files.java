@@ -16,6 +16,7 @@
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.data.io.Data_Files;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
@@ -30,7 +31,7 @@ public class ONSPD_Files extends Data_Files {
     /**
      * @param dir
      */
-    public ONSPD_Files(File dir) {
+    public ONSPD_Files(File dir) throws IOException {
         super(dir);
     }
 
