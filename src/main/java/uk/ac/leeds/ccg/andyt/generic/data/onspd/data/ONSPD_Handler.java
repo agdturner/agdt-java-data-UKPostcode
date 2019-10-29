@@ -58,28 +58,28 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else {
-            env.ge.log("<Issue calculating distance between PostcodeID0 "
+            env.env.log("<Issue calculating distance between PostcodeID0 "
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>",
                     true);
             if (aPoint == null) {
-                env.ge.log("No point look up for PostcodeID0 " + PostcodeID0
+                env.env.log("No point look up for PostcodeID0 " + PostcodeID0
                         + " in " + yM30v, true);
                 if (cPoint != null) {
-                    env.ge.log("However there is a look up for PostcodeID0 "
+                    env.env.log("However there is a look up for PostcodeID0 "
                             + PostcodeID0 + " in " + yM31v
                             + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                env.ge.log("No point look up for PostcodeID1 " + PostcodeID1
+                env.env.log("No point look up for PostcodeID1 " + PostcodeID1
                         + " in " + yM31v, true);
                 if (dPoint != null) {
-                    env.ge.log("However there is a look up for PostcodeID1 "
+                    env.env.log("However there is a look up for PostcodeID1 "
                             + PostcodeID1 + " in " + yM30v
                             + "! Maybe use this instead?", true);
                 }
             }
-            env.ge.log("</Issue calculating distance between PostcodeID0 "
+            env.env.log("</Issue calculating distance between PostcodeID0 "
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">",
                     true);
         }
@@ -96,30 +96,30 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         if (aPoint != null && bPoint != null) {
             result = aPoint.getDistance(bPoint);
         } else {
-            env.ge.log("<Issue calculating distance between PostcodeID0 "
+            env.env.log("<Issue calculating distance between PostcodeID0 "
                     + postcode0 + " and PostcodeID1 " + postcode1 + "/>",
                     true);
             if (aPoint == null) {
-                env.ge.log("No point look up for PostcodeID0 " + postcode0
+                env.env.log("No point look up for PostcodeID0 " + postcode0
                         + " in " + yM30v, true);
                 aPoint = getPointFromPostcode(yM31v, TYPE_UNIT, postcode0);
                 if (aPoint != null) {
-                    env.ge.log("However there is a look up for PostcodeID0 "
+                    env.env.log("However there is a look up for PostcodeID0 "
                             + postcode0 + " in " + yM31v
                             + "! Maybe use this instead?", true);
                 }
             }
             if (bPoint == null) {
-                env.ge.log("No point look up for PostcodeID1 " + postcode1
+                env.env.log("No point look up for PostcodeID1 " + postcode1
                         + " in " + yM31v, true);
                 bPoint = getPointFromPostcode(yM30v, TYPE_UNIT, postcode1);
                 if (bPoint != null) {
-                    env.ge.log("However there is a look up for PostcodeID1 "
+                    env.env.log("However there is a look up for PostcodeID1 "
                             + postcode1 + " in " + yM30v
                             + "! Maybe use this instead?", true);
                 }
             }
-            env.ge.log("</Issue calculating distance between PostcodeID0 "
+            env.env.log("</Issue calculating distance between PostcodeID0 "
                     + postcode0 + " and PostcodeID1 " + postcode1 + ">",
                     true);
         }
@@ -413,16 +413,16 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             File outFile = new File(outDir, processedFilename);
             TreeMap<String, ONSPD_Point> postcodeUnitPointLookup;
             if (outFile.exists()) {
-                env.ge.log("Load " + outFile, true);
-                postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) env.ge.io.readObject(outFile);
+                env.env.log("Load " + outFile, true);
+                postcodeUnitPointLookup = (TreeMap<String, ONSPD_Point>) env.env.io.readObject(outFile);
             } else {
                 File f;
                 f = ONSPDFiles.get(YM3);
-                env.ge.log("Format " + f, true);
+                env.env.log("Format " + f, true);
                 postcodeUnitPointLookup = initPostcodeUnitPointLookup(
                         f, ignorePointsAtOrigin);
                 outDir.mkdirs();
-                env.ge.io.writeObject(postcodeUnitPointLookup, outFile);
+                env.env.io.writeObject(postcodeUnitPointLookup, outFile);
             }
             result.put(YM3, postcodeUnitPointLookup);
         }
@@ -465,7 +465,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         // Read NPD into a lookup
         TreeMap<String, String> lookup;
         lookup = readONSPDIntoTreeMapPostcodeString(infile, level, CensusYear, YM3NearestFormat);
-        env.ge.io.writeObject(lookup, outFile);
+        env.env.io.writeObject(lookup, outFile);
 //        //lookup = (TreeMap<String, ONSPD_Point>) Generic_IO.readObject(outFile);
         return lookup;
     }
@@ -599,7 +599,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             //int recordCounter = 0;
             BufferedReader br;
-            br = env.ge.io.getBufferedReader(file);
+            br = env.env.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
@@ -636,15 +636,15 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
     }
 
     public TreeMap<String, ONSPD_Point> getStringToONSPD_PointLookup(File file) {
-        return (TreeMap<String, ONSPD_Point>) env.ge.io.readObject(file);
+        return (TreeMap<String, ONSPD_Point>) env.env.io.readObject(file);
     }
 
     public TreeMap<String, String[]> getStringToStringArrayLookup(File file) {
-        return (TreeMap<String, String[]>) env.ge.io.readObject(file);
+        return (TreeMap<String, String[]>) env.env.io.readObject(file);
     }
 
     public HashMap<String, String> getStringToStringLookup(File file) {
-        return (HashMap<String, String>) env.ge.io.readObject(file);
+        return (HashMap<String, String>) env.env.io.readObject(file);
     }
 
     /**
@@ -943,12 +943,12 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = env.ge.io.getBufferedReader(file);
+            br = env.env.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            env.ge.io.skipline(aStreamTokenizer);
+            env.env.io.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1118,18 +1118,18 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             ONSPD_YM3 YM3NearestFormat) {
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
-        env.ge.log("year " + year + " month " + month, true);
+        env.env.log("year " + year + " month " + month, true);
         TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = env.ge.io.getBufferedReader(file);
+            br = env.env.io.getBufferedReader(file);
             StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            env.ge.io.skipline(aStreamTokenizer);
+            env.env.io.skipline(aStreamTokenizer);
             tokenType = aStreamTokenizer.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
@@ -1273,12 +1273,12 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             int lineCounter = 0;
             int recordCounter = 0;
             BufferedReader br;
-            br = env.ge.io.getBufferedReader(file);
+            br = env.env.io.getBufferedReader(file);
             StreamTokenizer st = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            env.ge.io.skipline(st);
+            env.env.io.skipline(st);
             tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {

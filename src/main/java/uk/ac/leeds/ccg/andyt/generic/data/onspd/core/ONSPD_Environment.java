@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
@@ -33,7 +34,8 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
 public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
         implements Serializable {
 
-    public final transient Generic_Environment ge;
+    public final transient Data_Environment de;
+    public final transient Generic_Environment env;
     public final transient ONSPD_Files Files;
 
     /**
@@ -47,10 +49,11 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 //    public ONSPD_Data data;
     public transient static final String EOL = System.getProperty("line.separator");
 
-    public ONSPD_Environment(Generic_Environment ge) {
+    public ONSPD_Environment(Data_Environment de) {
         //Memory_Threshold = 3000000000L;
-        this.ge = ge;
-        Files = new ONSPD_Files(ge.files.getDir());
+        this.de = de;
+        this.env = de.env;
+        Files = new ONSPD_Files(de.files.getDir());
     }
 
     /**
