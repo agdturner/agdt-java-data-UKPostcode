@@ -370,7 +370,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
 //    }
     public ONSPD_Handler(ONSPD_Environment env) {
         this.env = env;
-        this.files = env.Files;
+        this.files = env.files;
     }
 
     public String getDefaultLookupFilename() {

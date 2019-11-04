@@ -35,7 +35,7 @@ public class ONSPD_Main_Process extends ONSPD_Object {
 
     public ONSPD_Main_Process(ONSPD_Environment env) {
         super(env);
-        Files = env.Files;
+        Files = env.files;
     }
 
     public static void main(String[] args) {

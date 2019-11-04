@@ -32,12 +32,12 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
  *
  * @author geoagdt
  */
-public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
+public class ONSPD_Environment extends ONSPD_MemoryManager
         implements Serializable {
 
-    public final transient Data_Environment de;
     public final transient Generic_Environment env;
-    public final transient ONSPD_Files Files;
+    public final transient Data_Environment de;
+    public final transient ONSPD_Files files;
 
     /**
      * For storing an instance of ONSPD_Handler for convenience.
@@ -54,7 +54,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
         //Memory_Threshold = 3000000000L;
         this.de = de;
         this.env = de.env;
-        Files = new ONSPD_Files(de.files.getDir());
+        files = new ONSPD_Files(de.files.getDir());
     }
 
     /**
@@ -70,7 +70,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
 //            if (clear == 0) {
 //                return false;
 //            }
-            if (!swapDataAny()) {
+            if (!cacheDataAny()) {
                 return false;
             }
         }
@@ -78,17 +78,17 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     }
 
     @Override
-    public boolean swapDataAny(boolean handleOutOfMemoryError) {
+    public boolean cacheDataAny(boolean hoome) {
         try {
-            boolean result = swapDataAny();
+            boolean r = cacheDataAny();
             checkAndMaybeFreeMemory();
-            return result;
+            return r;
         } catch (OutOfMemoryError e) {
-            if (handleOutOfMemoryError) {
+            if (hoome) {
                 clearMemoryReserve();
-                boolean result = swapDataAny(HOOMEF);
+                boolean r = cacheDataAny(HOOMEF);
                 initMemoryReserve();
-                return result;
+                return r;
             } else {
                 throw e;
             }
@@ -96,18 +96,17 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     }
 
     /**
-     * Currently this just tries to swap ONSPD data.
+     * Currently this just tries to cache ONSPD data.
      *
      * @return
      */
     @Override
-    public boolean swapDataAny() {
-        boolean r;
-        r = clearSomeData();
+    public boolean cacheDataAny() {
+        boolean r = clearSomeData();
         if (r) {
             return r;
         } else {
-            System.out.println("No ONSPD data to clear. Do some coding to try "
+            env.log("No ONSPD data to clear. Do some coding to try "
                     + "to arrange to clear something else if needs be. If the "
                     + "program fails then try providing more memory...");
             return r;
@@ -120,26 +119,24 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
     }
 
     public int clearAllData() {
-        int r;
-//        r = data.clearAllData();
-//        return r;
+//        return data.clearAllData();
         return 0;
     }
 
     public void cacheData() {
-//        File f;
-//        f = Files.getEnvDataFile();
-        System.out.println("<cache data>");
+//        File f = files.getEnvDataFile();
+        String m = "cache data";
+        env.logStartTag(m);
 //        Generic_IO.writeObject(data, f);
-        System.out.println("</cache data>");
+        env.logEndTag(m);
     }
 
     public final void loadData() {
-//        File f;
-//        f = Files.getEnvDataFile();
-        System.out.println("<load data>");
+//        File f = files.getEnvDataFile();
+        String m = "load data";
+        env.logStartTag(m);
 //        data = (ONSPD_Data) Generic_IO.readObject(f);
-        System.out.println("<load data>");
+        env.logEndTag(m);
     }
 
     /**
@@ -182,7 +179,7 @@ public class ONSPD_Environment extends ONSPD_OutOfMemoryErrorHandler
         //levels.add("Sector");
         //levels.add("Area");
         TreeMap<ONSPD_YM3, File> ONSPDFiles;
-        ONSPDFiles = Files.getInputONSPDFiles();
+        ONSPDFiles = files.getInputONSPDFiles();
         Iterator<String> ite2;
         ite2 = levels.iterator();
         while (ite2.hasNext()) {
