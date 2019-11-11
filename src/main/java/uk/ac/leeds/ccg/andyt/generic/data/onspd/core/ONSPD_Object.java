@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Andy Turner, CCG, University of Leeds.
+ * Copyright 2019 Centre for Computational Geography, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,16 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.core;
 
-import java.io.Serializable;
-
 /**
- * @author Andy Turner
+ *
+ * @author geoagdt
  */
-public abstract class ONSPD_Object implements Serializable {
-
-    /**
-     * A reference to LR_Environment
-     */
-    public transient ONSPD_Environment Env;
-
-//    public LR_Object(){
-//        Env = new LR_Environment();
-//    }
-    protected ONSPD_Object() {
+public class ONSPD_Object {
+    
+    public final ONSPD_Environment oe;
+    
+    public ONSPD_Object(ONSPD_Environment e) {
+        oe = e;        
     }
-
-    public ONSPD_Object(ONSPD_Environment env) {
-        Env = env;
-    }
+    
 }

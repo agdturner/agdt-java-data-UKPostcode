@@ -4,30 +4,33 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.data;
 
+import uk.ac.leeds.ccg.andyt.data.id.Data_RecordID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 
 /**
  *
  * @author geoagdt
  */
-public class ONSPD_Record_2008_02Feb extends ONSPD_AbstractRecord2 {
+public class ONSPD_Record_2008_02Feb extends ONSPD_Record2 {
 
     protected String oacode;
     protected String oaind;
 
-    protected ONSPD_Record_2008_02Feb(){}
-    
+    public ONSPD_Record_2008_02Feb(ONSPD_Environment e, Data_RecordID i){
+        super(e, i);
+    }
     /*
      * NSPDF_FEB_2008_UK_1M.csv 
      * pcd,pcd2,pcds,dointr,doterm,oscty,oslaua,osward,usertype,oseast1m,osnrth1m,osgrdind,oshlthau,hro,ctry,GENIND,pafind,gor,streg,pcon,eer,teclec,ttwa,pct,nuts,psed,cened,edind,ADDRCT,DPCT,MOCT,SMLBUSCT,oshaprev,lea,oldha,wardc91,wardo91,ward98,statsward,oacode,oaind,casward,park,soa1,dzone1,soa2,urindew,urindsc,urindni,dzone2,soa1ni,oac,oldpct
      * "AB1 0AB","AB1  0AB","AB1 0AB","198001","199606","00","QA","MJ","0","385177","0801314","1","SN9","S00","179"," "," ","X","0","802","11","S08","248","012","UKM1001","99ZZ0099","ZZ0099","9","2","3","2","1","SN9","QA","SN9","72UB43","72UB43","00QA36","99ZZ00","60QA001270","7","01C31","99","Z99999999","S01000011","Z99999999","9","6","Z","S02000007","99ZZ99Z9","4B3","X98"
      */
     /**
-     * @param env
+     * @param e
+     * @param i
      * @param line
      */
-    public ONSPD_Record_2008_02Feb(ONSPD_Environment env, String line) {
-        this.Env = env;
+    public ONSPD_Record_2008_02Feb(ONSPD_Environment e, Data_RecordID i, String line) {
+        super(e, i);
         String[] fields = line.split("\",\"");
         /*
          * 2008_FEB 11

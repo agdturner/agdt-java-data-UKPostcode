@@ -4,6 +4,7 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.data;
 
+import uk.ac.leeds.ccg.andyt.data.id.Data_RecordID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 
 /**
@@ -15,8 +16,8 @@ public class ONSPD_Record_2013_02Feb extends ONSPD_Record_2012_11Nov {
     protected final String parish;
     protected final String wz11;
     
-    public ONSPD_Record_2013_02Feb(ONSPD_Environment env, String line) {
-        super(env, line);
+    public ONSPD_Record_2013_02Feb(ONSPD_Environment e, Data_RecordID i, String line) {
+        super(e, i, line);
         String[] fields = line.split("\",\"");
         parish = fields[fields.length - 2];
         wz11 = fields[fields.length - 1];

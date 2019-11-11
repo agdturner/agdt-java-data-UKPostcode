@@ -24,10 +24,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.data.id.Data_RecordID;
 import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_ID;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.util.ONSPD_YM3;
@@ -48,15 +47,15 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
     //TreeMap<String, TreeMap<ONSPD_YM3, TreeMap<String, ONSPD_Point>>> ONSPDLookups;
     public double getDistanceBetweenPostcodes(ONSPD_Point aPoint,
             ONSPD_Point bPoint, ONSPD_Point cPoint, ONSPD_Point dPoint,
-            ONSPD_YM3 yM30v, ONSPD_YM3 yM31v, ONSPD_ID PostcodeID0,
-            ONSPD_ID PostcodeID1) {
-        double result = 0.0d;
+            ONSPD_YM3 yM30v, ONSPD_YM3 yM31v, Data_RecordID PostcodeID0,
+            Data_RecordID PostcodeID1) {
+        double r = 0.0d;
         //ONSPD_Point aPoint;
         //aPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM30v).get(PostcodeID0);
         //ONSPD_Point bPoint;
         //bPoint = env.getSHBE_Data().getPostcodeIDToPointLookup(yM31v).get(PostcodeID1);
         if (aPoint != null && bPoint != null) {
-            result = aPoint.getDistance(bPoint);
+            r = aPoint.getDistance(bPoint);
         } else {
             env.env.log("<Issue calculating distance between PostcodeID0 "
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + "/>",
@@ -83,7 +82,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                     + PostcodeID0 + " and PostcodeID1 " + PostcodeID1 + ">",
                     true);
         }
-        return result;
+        return r;
     }
 
     public double getDistanceBetweenPostcodes(ONSPD_YM3 yM30v, ONSPD_YM3 yM31v,
@@ -941,20 +940,20 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         TreeMap<String, ONSPD_Point> result = new TreeMap<>();
         try {
             int lineCounter = 0;
-            int recordCounter = 0;
-            BufferedReader br;
-            br = env.env.io.getBufferedReader(file);
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
+            long rID = 0;
+            BufferedReader br = env.env.io.getBufferedReader(file);
+            StreamTokenizer st = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            env.env.io.skipline(aStreamTokenizer);
-            tokenType = aStreamTokenizer.nextToken();
+            env.env.io.skipline(st);
+            tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPD_Record_EastingNorthing rec;
-                        rec = new ONSPD_Record_EastingNorthing(env, line);
+                        ONSPD_Record rec;
+                        rec = new ONSPD_Record(env, new Data_RecordID(rID), line);
+                        rID++;
                         int easting = rec.getOseast1m();
                         int northing = rec.getOsnrth1m();
                         ONSPD_Point point;
@@ -1000,14 +999,14 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
-                        line = aStreamTokenizer.sval;
+                        line = st.sval;
                         break;
                 }
-                tokenType = aStreamTokenizer.nextToken();
+                tokenType = st.nextToken();
             }
             br.close();
-        } catch (IOException aIOException) {
-            System.err.println(aIOException.getMessage() + " in "
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage() + " in "
                     + "ONSPD_Postcode_Handler.initPostcodeUnitPointLookup(File,boolean)");
             System.exit(2);
         }
@@ -1112,76 +1111,74 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
      * @return
      */
     public TreeMap<String, String> readONSPDIntoTreeMapPostcodeString(
-            File file,
-            String level,
-            int censusYear,
-            ONSPD_YM3 YM3NearestFormat) {
+            File file, String level, int censusYear, ONSPD_YM3 YM3NearestFormat) {
         int year = YM3NearestFormat.getYear();
         int month = YM3NearestFormat.getMonth();
         env.env.log("year " + year + " month " + month, true);
         TreeMap<String, String> result = new TreeMap<>();
         try {
             int lineCounter = 0;
-            int recordCounter = 0;
-            BufferedReader br;
-            br = env.env.io.getBufferedReader(file);
-            StreamTokenizer aStreamTokenizer = getStreamTokeniser(br);
+            long rID = 0;
+            BufferedReader br = env.env.io.getBufferedReader(file);
+            StreamTokenizer st = getStreamTokeniser(br);
             String line = "";
             //Skip the first line
             int tokenType;
-            env.env.io.skipline(aStreamTokenizer);
-            tokenType = aStreamTokenizer.nextToken();
+            env.env.io.skipline(st);
+            tokenType = st.nextToken();
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPD_AbstractRecord rec;
+                        ONSPD_Record0 rec;
+                        Data_RecordID ID = new Data_RecordID(rID);
+                        rID++;
                         if (year < 2011 || (year == 2011 && month < 4)) {
-                            rec = new ONSPD_Record_2008_02Feb(env, line);
+                            rec = new ONSPD_Record_2008_02Feb(env, ID, line);
                         } else if (year < 2012 || (year == 2012 && month < 8)) {
-                            rec = new ONSPD_Record_2011_05May(env, line);
+                            rec = new ONSPD_Record_2011_05May(env, ID, line);
                         } else if (year == 2012 && month < 11) {
-                            rec = new ONSPD_Record_2011_05May(env, line);
-                            //rec = new ONSPD_Record_2012_08Nov(env, line);
+                            rec = new ONSPD_Record_2011_05May(env, ID, line);
+                            //rec = new ONSPD_Record_2012_08Nov(env, ID, line);
                         } else if (year < 2013 || (year == 2013 && month < 2)) {
-                            rec = new ONSPD_Record_2012_11Nov(env, line);
+                            rec = new ONSPD_Record_2012_11Nov(env, ID, line);
                         } else if (year == 2013 && month < 5) {
-                            rec = new ONSPD_Record_2013_02Feb(env, line);
+                            rec = new ONSPD_Record_2013_02Feb(env, ID, line);
                         } else if (year == 2013 && month < 8) {
-                            rec = new ONSPD_Record_2013_05May(env, line);
+                            rec = new ONSPD_Record_2013_05May(env, ID, line);
                         } else if (year < 2014 || (year == 2014 && month < 11)) {
-                            rec = new ONSPD_Record_2013_08Aug(env, line);
+                            rec = new ONSPD_Record_2013_08Aug(env, ID, line);
                         } else if (year < 2015 || (year == 2015 && month < 5)) {
-                            rec = new ONSPD_Record_2014_11Nov(env, line);
+                            rec = new ONSPD_Record_2014_11Nov(env, ID, line);
                         } else if (year == 2015 && month < 8) {
-                            rec = new ONSPD_Record_2015_05May(env, line);
+                            rec = new ONSPD_Record_2015_05May(env, ID, line);
                         } else if (year < 2016 || (year == 2016 && month < 2)) {
-                            rec = new ONSPD_Record_2015_08Aug(env, line);
+                            rec = new ONSPD_Record_2015_08Aug(env, ID, line);
                         } else {
-                            rec = new ONSPD_Record_2016_02Feb(env, line);
+                            rec = new ONSPD_Record_2016_02Feb(env, ID, line);
                         }
 //                        if (YM3NearestFormat.equalsIgnoreCase("2016_Feb")) {
-//                            rec = new ONSPD_Record_2016_02Feb(env, line);
+//                            rec = new ONSPD_Record_2016_02Feb(env, ID, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_Aug")) {
-//                            rec = new ONSPD_Record_2015_08Aug(env, line);
+//                            rec = new ONSPD_Record_2015_08Aug(env, ID, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2015_May")) {
-//                            rec = new ONSPD_Record_2015_05May(env, line);
+//                            rec = new ONSPD_Record_2015_05May(env, ID, line);
 //                        } else if (YM3NearestFormat.equalsIgnoreCase("2014_Nov")) {
-//                            rec = new ONSPD_Record_2014_11Nov(env, line);
+//                            rec = new ONSPD_Record_2014_11Nov(env, ID, line);
 //                        } else {
-//                            rec = new ONSPD_Record_2013_08Aug(env, line);
+//                            rec = new ONSPD_Record_2013_08Aug(env, ID, line);
 //                        }
                         String value = "";
                         if (level.equalsIgnoreCase(ONSPD_Strings.s_OA)) {
                             if (censusYear == 2001) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getOa01();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getOa01();
                                 } else {
                                     value = null;
                                 }
                             }
                             if (censusYear == 2011) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getOa11();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getOa11();
                                 } else if (rec instanceof ONSPD_Record_2011_05May) {
                                     value = ((ONSPD_Record_2011_05May) rec).getOacode();
                                 } else {
@@ -1191,15 +1188,15 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         if (level.equalsIgnoreCase(ONSPD_Strings.s_LSOA)) {
                             if (censusYear == 2001) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getLsoa01();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getLsoa01();
                                 } else {
                                     value = null;
                                 }
                             }
                             if (censusYear == 2011) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getLsoa11();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getLsoa11();
                                 } else if (rec instanceof ONSPD_Record_2011_05May) {
                                     value = null;
                                 }
@@ -1207,15 +1204,15 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         if (level.equalsIgnoreCase(ONSPD_Strings.s_MSOA)) {
                             if (censusYear == 2001) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getMsoa01();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getMsoa01();
                                 } else {
                                     value = null;
                                 }
                             }
                             if (censusYear == 2011) {
-                                if (rec instanceof ONSPD_AbstractRecord1) {
-                                    value = ((ONSPD_AbstractRecord1) rec).getMsoa11();
+                                if (rec instanceof ONSPD_Record1) {
+                                    value = ((ONSPD_Record1) rec).getMsoa11();
                                 } else if (rec instanceof ONSPD_Record_2011_05May) {
                                     value = null;
                                 }
@@ -1245,10 +1242,10 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
                         }
                         break;
                     case StreamTokenizer.TT_WORD:
-                        line = aStreamTokenizer.sval;
+                        line = st.sval;
                         break;
                 }
-                tokenType = aStreamTokenizer.nextToken();
+                tokenType = st.nextToken();
             }
             br.close();
         } catch (IOException aIOException) {
@@ -1271,7 +1268,7 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
         TreeMap<String, String[]> result = new TreeMap<>();
         try {
             int lineCounter = 0;
-            int recordCounter = 0;
+            long rID = 0;
             BufferedReader br;
             br = env.env.io.getBufferedReader(file);
             StreamTokenizer st = getStreamTokeniser(br);
@@ -1283,7 +1280,8 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
             while (tokenType != StreamTokenizer.TT_EOF) {
                 switch (tokenType) {
                     case StreamTokenizer.TT_EOL:
-                        ONSPD_Record_2013_08Aug rec = new ONSPD_Record_2013_08Aug(env, line);
+                        ONSPD_Record_2013_08Aug rec = new ONSPD_Record_2013_08Aug(env, new Data_RecordID(rID), line);
+                        rID ++;
                         String[] values = new String[4];
                         values[0] = rec.getOa01();
                         values[1] = rec.getLsoa01();
@@ -1312,43 +1310,43 @@ public class ONSPD_Handler extends Data_UKPostcodeHandler implements Serializabl
     }
 
     private StreamTokenizer getStreamTokeniser(BufferedReader br) {
-        StreamTokenizer result;
-        result = new StreamTokenizer(br);
-        result.resetSyntax();
-        result.wordChars(',', ',');
-        result.wordChars('"', '"');
-        result.wordChars('\'', '\'');
-        result.wordChars('&', '&');
-        result.wordChars(';', ';');
-        result.wordChars('(', '(');
-        result.wordChars(')', ')');
-        result.wordChars('0', '0');
-        result.wordChars('1', '1');
-        result.wordChars('2', '2');
-        result.wordChars('3', '3');
-        result.wordChars('4', '4');
-        result.wordChars('5', '5');
-        result.wordChars('6', '6');
-        result.wordChars('7', '7');
-        result.wordChars('8', '8');
-        result.wordChars('9', '9');
-        result.wordChars('.', '.');
-        result.wordChars('-', '-');
-        result.wordChars('+', '+');
-        result.wordChars('a', 'z');
-        result.wordChars('A', 'Z');
-        result.wordChars('\t', '\t');
-        result.wordChars(' ', ' ');
-        result.wordChars('#', '#');
-        result.wordChars('*', '*');
-        result.wordChars(':', ':');
+        StreamTokenizer r;
+        r = new StreamTokenizer(br);
+        r.resetSyntax();
+        r.wordChars(',', ',');
+        r.wordChars('"', '"');
+        r.wordChars('\'', '\'');
+        r.wordChars('&', '&');
+        r.wordChars(';', ';');
+        r.wordChars('(', '(');
+        r.wordChars(')', ')');
+        r.wordChars('0', '0');
+        r.wordChars('1', '1');
+        r.wordChars('2', '2');
+        r.wordChars('3', '3');
+        r.wordChars('4', '4');
+        r.wordChars('5', '5');
+        r.wordChars('6', '6');
+        r.wordChars('7', '7');
+        r.wordChars('8', '8');
+        r.wordChars('9', '9');
+        r.wordChars('.', '.');
+        r.wordChars('-', '-');
+        r.wordChars('+', '+');
+        r.wordChars('a', 'z');
+        r.wordChars('A', 'Z');
+        r.wordChars('\t', '\t');
+        r.wordChars(' ', ' ');
+        r.wordChars('#', '#');
+        r.wordChars('*', '*');
+        r.wordChars(':', ':');
         String s = "/";
         char c = s.charAt(0);
         int c_int = (int) c;
         //System.out.println("s " + s + " c " + c + " c_int " + c_int) ;
-        result.wordChars(c_int, c_int);
-        result.eolIsSignificant(true);
-        return result;
+        r.wordChars(c_int, c_int);
+        r.eolIsSignificant(true);
+        return r;
     }
 
 }

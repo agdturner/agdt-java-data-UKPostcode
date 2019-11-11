@@ -18,12 +18,11 @@ package uk.ac.leeds.ccg.andyt.generic.data.onspd.process;
 import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
-import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Object;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Collection;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Combined_Record;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Data;
-
 /**
  *
  * @author geoagdt
@@ -42,8 +41,7 @@ public class ONSPD_Main_Process extends ONSPD_Object {
         try {
             ONSPD_Environment env = new ONSPD_Environment(
                     new Data_Environment());
-            ONSPD_Main_Process p;
-            p = new ONSPD_Main_Process(env);
+            ONSPD_Main_Process p = new ONSPD_Main_Process(env);
             // Main switches
             p.run();
         } catch (IOException ex) {
