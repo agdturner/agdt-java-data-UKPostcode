@@ -15,10 +15,13 @@
  */
 package uk.ac.leeds.ccg.andyt.generic.data.onspd.process;
 
+import java.io.File;
 import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Environment;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Object;
+import uk.ac.leeds.ccg.andyt.generic.data.onspd.core.ONSPD_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Collection;
 //import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Combined_Record;
@@ -39,9 +42,12 @@ public class ONSPD_Main_Process extends ONSPD_Object {
 
     public static void main(String[] args) {
         try {
-            ONSPD_Environment env = new ONSPD_Environment(
-                    new Data_Environment());
-            ONSPD_Main_Process p = new ONSPD_Main_Process(env);
+            Data_Environment de = new Data_Environment(
+                    new Generic_Environment());
+            File dataDir = new File(de.files.getDir(), ONSPD_Strings.s_data);
+            dataDir = new File(dataDir, ONSPD_Strings.s_ONSPD);
+            ONSPD_Environment oe = new ONSPD_Environment(de, dataDir);
+            ONSPD_Main_Process p = new ONSPD_Main_Process(oe);
             // Main switches
             p.run();
         } catch (IOException ex) {

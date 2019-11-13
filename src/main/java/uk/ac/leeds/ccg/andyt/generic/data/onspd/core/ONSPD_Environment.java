@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Strings;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Point;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.data.ONSPD_Handler;
 import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
@@ -50,11 +51,27 @@ public class ONSPD_Environment extends ONSPD_MemoryManager
 //    public ONSPD_Data data;
     public transient static final String EOL = System.getProperty("line.separator");
 
-    public ONSPD_Environment(Data_Environment de) throws IOException {
-        //Memory_Threshold = 3000000000L;
-        this.de = de;
-        this.env = de.env;
-        files = new ONSPD_Files(de.files.getDir());
+    public ONSPD_Environment(Data_Environment e, File dataDir) throws IOException {
+        /**
+         * Init de.
+         */
+        de = e;
+        File d0 = new File(dataDir, Generic_Strings.s_generated);
+        File d = new File(d0, Generic_Strings.s_data);
+        de.files.setDir(d);
+        de.initLog(Generic_Strings.s_data);
+        /**
+         * Init env.
+         */
+        env = e.env;
+        d = new File(d0, Generic_Strings.s_generic);
+        env.files.setDir(d);
+        env.initLog(Generic_Strings.s_generic);
+        /**
+         * Init files.
+         */
+        files = new ONSPD_Files(dataDir);
+        //files = new ONSPD_Files(de.files.getDir());
     }
 
     /**
