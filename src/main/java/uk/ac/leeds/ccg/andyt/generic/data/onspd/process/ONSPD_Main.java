@@ -30,12 +30,12 @@ import uk.ac.leeds.ccg.andyt.generic.data.onspd.io.ONSPD_Files;
  *
  * @author geoagdt
  */
-public class ONSPD_Main_Process extends ONSPD_Object {
+public class ONSPD_Main extends ONSPD_Object {
 
     // For convenience
     protected final ONSPD_Files Files;
 
-    public ONSPD_Main_Process(ONSPD_Environment env) {
+    public ONSPD_Main(ONSPD_Environment env) {
         super(env);
         Files = env.files;
     }
@@ -47,7 +47,7 @@ public class ONSPD_Main_Process extends ONSPD_Object {
             File dataDir = new File(de.files.getDir(), ONSPD_Strings.s_data);
             dataDir = new File(dataDir, ONSPD_Strings.s_ONSPD);
             ONSPD_Environment oe = new ONSPD_Environment(de, dataDir);
-            ONSPD_Main_Process p = new ONSPD_Main_Process(oe);
+            ONSPD_Main p = new ONSPD_Main(oe);
             // Main switches
             p.run();
         } catch (IOException ex) {
