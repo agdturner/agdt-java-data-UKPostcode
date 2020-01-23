@@ -3,22 +3,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-data-ONSPD</artifactId>
+    <artifactId>agdt-java-data-UKPostcode</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>agdt-java-data-ONSPD</name>
-    <url>https://github.com/agdturner/agdt-java-data-ONSPD</url>
+    <name>agdt-java-data-UKPostcode</name>
+    <url>https://github.com/agdturner/agdt-java-data-UKPostcode</url>
     <description>Java for handling and processing UK Office for National Statistics (ONS) Postcode Directory data.</description>
     <scm>
-        <url>git@github.com:agdturner/agdt-java-data-ONSPD.git</url>
-        <connection>scm:git:git@github.com:agdturner/agdt-java-data-ONSPD.git</connection>
-        <developerConnection>scm:git:git@github.com:agdturner/agdt-java-data-ONSPD</developerConnection>
+        <url>git@github.com:agdturner/agdt-java-data-UKPostcode.git</url>
+        <connection>scm:git:git@github.com:agdturner/agdt-java-data-UKPostcode.git</connection>
+        <developerConnection>scm:git:git@github.com:agdturner/agdt-java-data-UKPostcode</developerConnection>
     </scm>
     <licenses>
         <license>
             <name>Apache License 2.0</name>
-            <url>https://github.com/agdturner/agdt-java-data-ONSPD/LICENSE.txt</url>
+            <url>https://github.com/agdturner/agdt-java-data-UKPostcode/LICENSE.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
