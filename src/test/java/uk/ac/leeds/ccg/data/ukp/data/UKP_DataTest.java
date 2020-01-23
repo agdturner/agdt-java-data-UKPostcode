@@ -19,12 +19,12 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import uk.ac.leeds.ccg.data.core.Data_Environment;
 import uk.ac.leeds.ccg.data.id.Data_RecordID;
 import uk.ac.leeds.ccg.data.ukp.core.UKP_Environment;
@@ -42,19 +42,19 @@ public class UKP_DataTest {
     public UKP_DataTest() {
     }
     
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
     
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
     
-    @Before
+    @BeforeEach
     public void setUp() {
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
