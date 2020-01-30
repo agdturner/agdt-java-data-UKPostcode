@@ -122,6 +122,6 @@ public class ONSPD_Record extends Data_Record {
 
     @Override
     public Data_ID getID() {
-        return ID;
+        return id;
     }
 }

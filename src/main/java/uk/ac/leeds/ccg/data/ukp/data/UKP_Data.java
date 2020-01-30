@@ -197,13 +197,13 @@ public class UKP_Data extends UKP_Object {
      * 2013_MAY 2013_AUG 2013_NOV 2014_FEB 2014_MAY 2014_AUG 2014_NOV 2015_FEB
      * 2015_MAY 2015_AUG 2015_NOV 2016_FEB 2016_MAY 2016_AUG 2016_NOV
      *
-     * @param YM3
-     * @return
+     * @param ym3 The YM3.
+     * @return The nearest ym3 for the ONSPD Lookup.
      */
-    public UKP_YM3 getNearestYM3ForONSPDLookup(UKP_YM3 YM3) {
+    public UKP_YM3 getNearestYM3ForONSPDLookup(UKP_YM3 ym3) {
         UKP_YM3 defaultLatest = new UKP_YM3(2017, 5);
-        int year = YM3.getYear();
-        int month = YM3.getMonth();
+        int year = ym3.getYear();
+        int month = ym3.getMonth();
         if (year > 2016) {
             if (month == 1 || month == 2) {
                 return new UKP_YM3(year, 2);
@@ -321,14 +321,13 @@ public class UKP_Data extends UKP_Object {
     }
 
     /**
-     * @param input TreeMap<String, String> where values are postcodes for which
-     * the coordinates are to be returned as a ONSPD_Point.
-     * @param yM3v
-     * @return TreeMap<String, ONSPD_Point> with the keys as in input and values
-     * calculated using getPointFromPostcode(value). If no look up is found for
-     * a postcode its key does not get put into the result.
-     * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException
+     * @param input Map where values are postcodes for which the coordinates are
+     * to be returned as ONSPD_Points.
+     * @param yM3v The ym3.
+     * @return Map with keys as in input and values that are points. If no look
+     * up is found for a postcode then it is not added.
+     * @throws java.io.IOException If encountered.
+     * @throws java.lang.ClassNotFoundException If encountered.
      */
     public TreeMap<String, ONSPD_Point> postcodeToPoints(
             TreeMap<String, String> input, UKP_YM3 yM3v) throws IOException,
@@ -351,6 +350,7 @@ public class UKP_Data extends UKP_Object {
     /**
      * For Unit Postcode "LS2 9JT": Postcode District = "LS2";
      * https://www.getthedata.com/postcode
+     *
      * @param p unitPostcode
      * @return The postcode district.
      */
@@ -896,6 +896,7 @@ public class UKP_Data extends UKP_Object {
      * For Unit Postcode "LS2 9JT": Postcode Area = "LS". There is no test done
      * that {@code p} is a valid unit postcode.
      * https://www.getthedata.com/postcode
+     *
      * @param p The unit postcode.
      * @return The postcode sector part of the postcode {@code p}.
      */
